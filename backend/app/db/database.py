@@ -14,3 +14,5 @@ AsyncSessionLocal = sessionmaker(
     class_=AsyncSession,
     expire_on_commit=False
 )
+
+print("DATABASE_URL:", DATABASE_URL)
