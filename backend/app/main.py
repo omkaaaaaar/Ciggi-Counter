@@ -3,9 +3,19 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
 from app.api.deps import get_db
 
+from app.db.database import engine
+from app.db.base import Base
+
+
+
 app = FastAPI(title="Ciggi Counter API 🚬")
 
 @app.get("/")
 async def root(db: AsyncSession = Depends(get_db)):
     result = await db.execute(text("SELECT 1"))
     return {"message": "DB Connected ✅", "result": result.scalar()}
+
+@app.on_event("startup")
+async def create_tables():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
