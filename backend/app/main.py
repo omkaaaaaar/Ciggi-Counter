@@ -6,6 +6,7 @@ from app.api.deps import get_db
 from app.db.database import engine
 from app.db.base import Base
 
+from app.api.routes import auth
 
 
 app = FastAPI(title="Ciggi Counter API 🚬")
@@ -19,3 +20,5 @@ async def root(db: AsyncSession = Depends(get_db)):
 async def create_tables():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+
+app.include_router(auth.router)

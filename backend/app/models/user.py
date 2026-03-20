@@ -2,10 +2,9 @@ import uuid
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.dialects.postgresql import UUID
 from datetime import datetime
-
 from app.db.base import Base
-
 from sqlalchemy.orm import relationship
+from pydantic import BaseModel, EmailStr
 
 cig_entries = relationship("CigEntry", backref="user")
 
@@ -17,3 +16,15 @@ class User(Base):
     password_hash = Column(String, nullable=False)
 
     created_at = Column(DateTime, default=datetime.utcnow)
+
+class UserCreate(BaseModel):
+    email: EmailStr
+    password: str
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
