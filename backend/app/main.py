@@ -8,6 +8,11 @@ from app.db.base import Base
 
 from app.api.routes import auth
 
+from app.api.routes import cig
+
+from app.models import user, cig_entry
+
+
 
 app = FastAPI(title="Ciggi Counter API 🚬")
 
@@ -22,3 +27,5 @@ async def create_tables():
         await conn.run_sync(Base.metadata.create_all)
 
 app.include_router(auth.router)
+
+app.include_router(cig.router)
