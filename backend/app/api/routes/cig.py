@@ -21,7 +21,13 @@ async def add_cig(
     user=Depends(get_current_user)
 ):
     entry = await add_cig_entry(db, user.id, data.date, data.count)
-    return {"message": "Entry added", "entry": entry}
+    return {
+    "message": "Entry added",
+    "entry": {
+        "date": entry.date,
+        "count": entry.count
+    }
+}
 
 
 # 📅 Daily
