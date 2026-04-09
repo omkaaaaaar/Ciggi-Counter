@@ -12,6 +12,8 @@ from app.api.routes import cig
 
 from app.models import user, cig_entry
 
+from fastapi.middleware.cors import CORSMiddleware
+
 
 
 app = FastAPI(title="Ciggi Counter API 🚬")
@@ -29,3 +31,12 @@ async def create_tables():
 app.include_router(auth.router)
 
 app.include_router(cig.router)
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # For now (dev)
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
