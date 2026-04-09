@@ -1,3 +1,4 @@
+import { login } from "../../services/auth"; // 👈 add this at top
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { motion } from "motion/react";
@@ -13,11 +14,28 @@ export function Auth() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Mock authentication - just navigate to dashboard
-    navigate("/dashboard");
-  };
+
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  console.log("LOGIN CLICKED");
+
+  try {
+    const res = await login(email, password);
+
+    console.log("LOGIN RESPONSE:", res);
+
+    if (res.access_token) {
+      localStorage.setItem("token", res.access_token);
+      navigate("/dashboard");
+    } else {
+      alert("Login failed ❌");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Something went wrong");
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-background via-background to-primary/10">
